@@ -15,7 +15,7 @@ interface ResultProps {
 
 export default function Results({ results }: ResultProps) {
   return (
-    <ul className="divide-y divide-gray-200">
+    <ul>
       {results.map((result) => (
         <li
           key={result.objectID}

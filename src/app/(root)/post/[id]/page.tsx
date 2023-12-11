@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import PageHeader from '@/components/PageHeader';
 import Comment from '@/components/Comment';
-import { comment } from 'postcss';
 import Loader from '@/components/Loader';
+import { useParams } from 'next/navigation';
 
 interface CommentProp {
   comment: Comment;
@@ -23,19 +23,12 @@ interface Post {
   children: CommentProp['comment'][];
 }
 
-const Comment2 = ({ comment }: CommentProp) => (
-  <div className="border p-4 rounded-md my-4 bg-gray-100">
-    <p className="text-gray-700">{comment.text}</p>
-    <p className="text-sm text-gray-500 mt-2">
-      by {comment.author} on {new Date(comment.created_at).toLocaleString()}
-    </p>
-  </div>
-);
-
 const PostDetailPage = () => {
   const [post, setPost] = useState<Post | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
+  const id = useParams().id;
 
   useEffect(() => {
     const fetchPost = async () => {
@@ -44,7 +37,7 @@ const PostDetailPage = () => {
         setError(null);
 
         const response = await axios.get(
-          'http://hn.algolia.com/api/v1/items/29564265' // Replace with dynamic ID
+          'http://hn.algolia.com/api/v1/items/' + id
         );
         setPost(response.data);
       } catch (err: any) {

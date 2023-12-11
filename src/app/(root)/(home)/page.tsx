@@ -50,18 +50,6 @@ export default function Home() {
       ) : error ? (
         <p>Error: {error}</p>
       ) : results.length ? (
-        // <ul>
-        //   {results.map((result) => (
-        //     <li key={result.objectID}>
-        //       <Link href={`/post/${result.objectID}`}>{result.title}</Link>
-        //       <p>{result.created_at}</p>
-        //       <p>{result.num_comments}</p>
-        //       <p>{result.author}</p>
-        //       <p>{result.points}</p>
-        //     </li>
-        //   ))}
-        // </ul>
-
         <Results results={results} />
       ) : (
         <p>No results</p>
