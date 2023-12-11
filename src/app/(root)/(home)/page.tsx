@@ -2,6 +2,7 @@
 import { useState, ChangeEvent } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
+import PageHeader from '@/components/PageHeader';
 
 interface SearchResult {
   objectID: string;
@@ -32,7 +33,7 @@ export default function Home() {
 
   return (
     <div>
-      <h1>Hacker News Search</h1>
+      <PageHeader title="Hacker News Search" />
       <input
         type="text"
         value={query}
