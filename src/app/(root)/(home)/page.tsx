@@ -1,11 +1,9 @@
 'use client';
 import { useState, ChangeEvent } from 'react';
-import Link from 'next/link';
 import axios from 'axios';
 import PageHeader from '@/components/PageHeader';
 import SearchBar from '@/components/Searchbar';
 import Loader from '@/components/Loader';
-import { Result } from 'postcss';
 import Results from '@/components/Results';
 
 interface SearchResult {
@@ -17,9 +15,27 @@ interface SearchResult {
   points: string;
 }
 
+const debounce = (func: Function, delay: number) => {
+  let timeoutId: ReturnType<typeof setTimeout>;
+
+  return (...args: any) => {
+    clearTimeout(timeoutId);
+
+    timeoutId = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
+};
+
+const CACHE_KEY = 'searchResults';
+
 export default function Home() {
-  const [query, setQuery] = useState<string>('');
-  const [results, setResults] = useState<SearchResult[]>([]);
+  const [query, setQuery] = useState<string>(
+    localStorage.getItem('search') || ''
+  );
+  const [results, setResults] = useState<SearchResult[]>(
+    JSON.parse(localStorage.getItem(CACHE_KEY) || '[]')
+  );
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -31,19 +47,35 @@ export default function Home() {
       const response = await axios.get(
         `http://hn.algolia.com/api/v1/search?query=${query}`
       );
-      setResults(response.data.hits);
+
+      const newResults = response.data.hits;
+
+      setResults(newResults);
+      localStorage.setItem(CACHE_KEY, JSON.stringify(newResults));
     } catch (err: any) {
       setError(err.message);
     } finally {
       setLoading(false);
+      if (query.trim() !== '') {
+        localStorage.setItem('search', query);
+      } else {
+        localStorage.removeItem('search');
+      }
     }
+  };
+
+  const debouncedSearch = debounce(search, 300);
+
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value);
+    debouncedSearch();
   };
 
   return (
     <div>
       <PageHeader title="Hacker News Search" />
 
-      <SearchBar input={query} setInput={setQuery} onClick={search} />
+      <SearchBar input={query} onChange={handleInputChange} />
 
       {loading ? (
         <Loader />

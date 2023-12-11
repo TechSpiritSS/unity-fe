@@ -1,13 +1,12 @@
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid';
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 
 interface SearchBarProp {
   input: string;
-  setInput: React.Dispatch<React.SetStateAction<string>>;
-  onClick: () => void;
+  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function SearchBar({ input, setInput, onClick }: SearchBarProp) {
+export default function SearchBar({ input, onChange }: SearchBarProp) {
   return (
     <div className="mb-2">
       <label
@@ -29,18 +28,18 @@ export default function SearchBar({ input, setInput, onClick }: SearchBarProp) {
             name="search"
             id="search"
             value={input}
-            onChange={(e) => setInput(e.target.value)}
+            onChange={onChange}
             className="block w-full rounded-none rounded-l-md border-0 py-1.5 pl-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
             placeholder="John Smith"
           />
         </div>
-        <button
+        {/* <button
           type="button"
           onClick={onClick}
           className="bg-gray-50 relative -ml-px inline-flex items-center gap-x-1.5 rounded-r-md px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-blue-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-60"
         >
           Search
-        </button>
+        </button> */}
       </div>
     </div>
   );

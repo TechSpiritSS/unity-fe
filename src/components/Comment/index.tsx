@@ -34,9 +34,10 @@ export default function Comment({ comments }: CommentProp) {
                       {timeAsDate(comment.created_at)}
                     </p>
                   </div>
-                  <div className="mt-2 text-sm text-gray-200">
-                    {comment.text}
-                  </div>
+                  <div
+                    className="mt-2 text-sm text-gray-200"
+                    dangerouslySetInnerHTML={{ __html: comment.text }}
+                  />
                 </div>
               </div>
             </div>
