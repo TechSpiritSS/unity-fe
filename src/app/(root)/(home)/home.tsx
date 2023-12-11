@@ -35,6 +35,17 @@ export default function Home() {
       setLoading(true);
       setError(null);
 
+      if (query.trim() === '') {
+        setResults([]);
+        setLoading(false);
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem(CACHE_KEY);
+          localStorage.removeItem('search');
+        }
+
+        return;
+      }
+
       const response = await axios.get(
         `http://hn.algolia.com/api/v1/search?query=${query}`
       );
