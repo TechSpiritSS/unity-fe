@@ -32,7 +32,7 @@ export default function Home() {
         `http://hn.algolia.com/api/v1/search?query=${query}`
       );
       setResults(response.data.hits);
-    } catch (err) {
+    } catch (err: any) {
       setError(err.message);
     } finally {
       setLoading(false);

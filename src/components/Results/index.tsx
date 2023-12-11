@@ -1,3 +1,4 @@
+import timeAsDate from '@/utils/timeAsDate';
 import { ChatBubbleLeftIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 
@@ -13,10 +14,6 @@ interface ResultProps {
 }
 
 export default function Results({ results }: ResultProps) {
-  const timeAsDate = (time: string) => {
-    return new Date(time).toLocaleString();
-  };
-
   return (
     <ul className="divide-y divide-gray-200">
       {results.map((result) => (
